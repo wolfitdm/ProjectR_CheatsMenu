@@ -23,9 +23,9 @@ namespace ProjectR_CheatMenu
         private bool showMenu = false; // Menü sichtbar?
         private Vector2 scrollPos;     // Scroll-Position
         private bool foldoutPlayer = true;
-        private bool foldoutSlaves = false;
-        private bool foldoutMonsters = false;
-        private bool foldoutBuildings = false;
+        private bool foldoutSlaves = true;
+        private bool foldoutMonsters = true;
+        private bool foldoutBuildings = true;
 
         // Beispielwerte für Cheats
         private int seatLeft = -4;
