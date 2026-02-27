@@ -161,6 +161,12 @@ namespace ProjectR_CheatMenu
 
                 if (GUILayout.Button("Spawn Player"))
                 {
+                    if (x == 0 && y == 0)
+                    {
+                        x = -2;
+                        y = 1;
+                    }
+
                     gm.NewCharacter("Player1", "Base", "Room", x, y, seat, order);
                 }
 
