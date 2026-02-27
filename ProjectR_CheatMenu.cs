@@ -123,6 +123,8 @@ namespace ProjectR_CheatMenu
                 character.CriticalHitMultiplier_Additional += critMultiplier;
                 character.MaxKnockbackStability_Additional += knockout;
                 character.BabyGrowthTime_Additional -= growth;
+                character.FetalGrowthTime_Additional -= growth;
+
                 character.CumshotTime_Additional -= cumshotTime;
 
                 CharacterManager.Instance.RefreshStatus(character);
@@ -135,6 +137,11 @@ namespace ProjectR_CheatMenu
                 if (character.BabyGrowthTime <= 0)
                 {
                     character.BabyGrowthTime = character.BabyGrowthTime_Additional = 0;
+                }
+
+                if (character.FetalGrowthTime <= 0)
+                {
+                    character.FetalGrowthTime = character.FetalGrowthTime_Additional = 0;
                 }
 
                 CharacterManager.Instance.RefreshStatus(character);
@@ -157,6 +164,8 @@ namespace ProjectR_CheatMenu
                 character.CriticalHitMultiplier_Additional += critMultiplier;
                 character.MaxKnockbackStability_Additional += knockout;
                 character.BabyGrowthTime_Additional -= growth;
+                character.FetalGrowthTime_Additional -= growth;
+
                 character.CumshotTime_Additional -= cumshotTime;
 
                 CharacterManager.Instance.RefreshStatus(character);
@@ -169,6 +178,11 @@ namespace ProjectR_CheatMenu
                 if (character.BabyGrowthTime <= 0)
                 {
                     character.BabyGrowthTime = character.BabyGrowthTime_Additional = 0;
+                }
+
+                if (character.FetalGrowthTime <= 0)
+                {
+                    character.FetalGrowthTime = character.FetalGrowthTime_Additional = 0;
                 }
 
                 CharacterManager.Instance.RefreshStatus(character);
