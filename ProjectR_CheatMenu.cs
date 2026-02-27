@@ -27,6 +27,9 @@ namespace ProjectR_CheatMenu
         private bool foldoutMonsters = true;
         private bool foldoutBuildings = true;
 
+        private bool foldoutSlaveCheats = true;
+        private bool foldoutMonsterCheats = true;
+
         // Beispielwerte für Cheats
         private int g_minX = -4;
         private int g_maxX = 3;
@@ -75,7 +78,7 @@ namespace ProjectR_CheatMenu
             if (!showMenu) return;
 
             // Fenster zentriert anzeigen
-            GUILayout.Window(0, new Rect(20, 20, 300, 400), DrawCheatWindow, "Cheat Menu");
+            GUILayout.Window(0, new Rect(20, 20, 350, 400), DrawCheatWindow, "Cheat Menu");
         }
 
         private void initPosition(int minX = -4, int maxX = 3, int minY = -4, int maxY = 3, int minSeat = 0, int maxSeat = 1, bool isBuilding = false)
@@ -99,6 +102,228 @@ namespace ProjectR_CheatMenu
             seat = (int)GUILayout.HorizontalSlider((float)seat, (float)minSeat, (float)maxSeat);
         }
 
+        private void UpdateCharacterId(string id, int health = 0, int defense = 0, int attackspeed = 0, int movementspeed = 0, int damage = 0, int critChance = 0, int critMultiplier = 0, int knockout = 0, int growth = 0, int cumshotTime = 0)
+        {
+            SeqList<Character> characterSeqList = PlayerDataManager.Instance.GetCharacterSeqList();
+
+            for (int index = 0; index < characterSeqList.Count; ++index) 
+            {
+                Character character = characterSeqList[index];
+
+                if (character.DataId != id) {
+                    continue;
+                }
+
+                character.Health_Additional += health;
+                character.Defense_Additional += defense;
+                character.AttackSpeed_Additional += attackspeed;
+                character.MovementSpeed_Additional += movementspeed;
+                character.Damage_Additional += damage;
+                character.CriticalHitChance_Additional += critChance;
+                character.CriticalHitMultiplier_Additional += critMultiplier;
+                character.MaxKnockbackStability_Additional += knockout;
+                character.BabyGrowthTime_Additional -= growth;
+                character.CumshotTime_Additional -= cumshotTime;
+
+                CharacterManager.Instance.RefreshStatus(character);
+
+                if (character.CumshotTime <= 0)
+                {
+                    character.CumshotTime = character.CumshotTime_Additional = 0;
+                }
+
+                if (character.BabyGrowthTime <= 0)
+                {
+                    character.BabyGrowthTime = character.BabyGrowthTime_Additional = 0;
+                }
+
+                CharacterManager.Instance.RefreshStatus(character);
+            }
+        }
+        private void UpdateAllCharacters(int health = 0, int defense = 0, int attackspeed = 0, int movementspeed = 0, int damage = 0, int critChance = 0, int critMultiplier = 0, int knockout = 0, int growth = 0, int cumshotTime = 0)
+        {
+            SeqList<Character> characterSeqList = PlayerDataManager.Instance.GetCharacterSeqList();
+
+            for (int index = 0; index < characterSeqList.Count; ++index)
+            {
+                Character character = characterSeqList[index];
+
+                character.Health_Additional += health;
+                character.Defense_Additional += defense;
+                character.AttackSpeed_Additional += attackspeed;
+                character.MovementSpeed_Additional += movementspeed;
+                character.Damage_Additional += damage;
+                character.CriticalHitChance_Additional += critChance;
+                character.CriticalHitMultiplier_Additional += critMultiplier;
+                character.MaxKnockbackStability_Additional += knockout;
+                character.BabyGrowthTime_Additional -= growth;
+                character.CumshotTime_Additional -= cumshotTime;
+
+                CharacterManager.Instance.RefreshStatus(character);
+
+                if (character.CumshotTime <= 0)
+                {
+                    character.CumshotTime = character.CumshotTime_Additional = 0;
+                }
+
+                if (character.BabyGrowthTime <= 0)
+                {
+                    character.BabyGrowthTime = character.BabyGrowthTime_Additional = 0;
+                }
+
+                CharacterManager.Instance.RefreshStatus(character);
+            }
+        }
+
+        private void createLayoutButtonsForCharacterId(string id)
+        {
+            string buttonId = id;
+
+            if (id == "Player1")
+            {
+                buttonId = "Player";
+            }
+            if (GUILayout.Button($"+10 Health To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, health: 10);
+            }
+            if (GUILayout.Button($"+10 Defense To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, defense: 10);
+            }
+            if (GUILayout.Button($"+10 Damage To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, damage: 10);
+            }
+            if (GUILayout.Button($"+10 Attack Speed To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, attackspeed: 10);
+            }
+            if (GUILayout.Button($"+10 Movement Speed To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, movementspeed: 10);
+            }
+            if (GUILayout.Button($"+10 CritChance To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, critChance: 10);
+            }
+            if (GUILayout.Button($"+10 CritMultiplier To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, critMultiplier: 10);
+            }
+            if (GUILayout.Button($"+10 Knockout Stability To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, knockout: 10);
+            }
+            if (GUILayout.Button($"+10 BabyGrowth Time To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, growth: 10);
+            }
+            if (GUILayout.Button($"+10 CumShot Time To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, cumshotTime: 10);
+            }
+            if (GUILayout.Button($"+10 All To All {buttonId}s"))
+            {
+                UpdateCharacterId(id, health: 10, defense: 10, damage: 10, attackspeed: 10, movementspeed: 10, critChance: 10, critMultiplier: 10, knockout: 10, cumshotTime: 10, growth: 10);
+            }
+        }
+
+        private void createLayoutButtonsForCharacterIdAll(string allId, string[] all)
+        {
+            string id = "";
+            string buttonId = allId;
+
+            if (GUILayout.Button($"+10 Health To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, health: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 Defense To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, defense: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 Attack Speed To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, attackspeed: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 Movement Speed To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, movementspeed: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 Damage To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, damage: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 CritChance To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, critChance: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 CritMultiplier To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, critMultiplier: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 Knockout Stability To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, knockout: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 BabyGrowth Time To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, growth: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 CumShot Time To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, cumshotTime: 10);
+                }
+            }
+            if (GUILayout.Button($"+10 All To All {buttonId}s"))
+            {
+                for (int i = 0; i < all.Length; i++)
+                {
+                    id = all[i];
+                    UpdateCharacterId(id, health: 10, defense: 10, damage: 10, attackspeed: 10, movementspeed: 10, critChance: 10, critMultiplier: 10, knockout: 10, cumshotTime: 10, growth: 10);
+                }
+            }
+        }
+
         private void DrawCheatWindow(int windowID)
         {
             scrollPos = GUILayout.BeginScrollView(scrollPos);
@@ -116,6 +341,15 @@ namespace ProjectR_CheatMenu
                 {
                     gm.Pd.Energy += 10;
                 }
+                if (GUILayout.Button("+100 Energy"))
+                {
+                    gm.Pd.Energy += 100;
+                }
+                if (GUILayout.Button("+1000 Energy"))
+                {
+                    gm.Pd.Energy += 1000;
+                }
+                createLayoutButtonsForCharacterId("Player1");
             }
 
             GUILayout.Space(10);
@@ -249,7 +483,90 @@ namespace ProjectR_CheatMenu
 
                 initPosition(g_minX -3, g_maxX + 3, g_minY - 3, g_maxY + 3, g_minSeat, g_maxSeat, true);
             }
+
+            GUILayout.Space(10);
+
+            foldoutSlaveCheats = EditorLikeFoldout(foldoutSlaveCheats, "Slave Cheats");
             
+            if (foldoutSlaveCheats)
+            {
+                string[] slaves = new string[] { "Human", "Elf1", "Knight", "Elf", "Sister", "Man", "Oni", "Shield", "Shortstack"};
+
+                Dictionary<string, bool> foldouts = new Dictionary<string, bool>();
+
+                for (int i = 0; i < slaves.Length; i++)
+                {
+                    string slave = slaves[i];
+                    if (!foldouts.ContainsKey(slave))
+                    {
+                        foldouts.Add(slave, true);
+                    }
+
+                    foldouts[slave] = EditorLikeFoldoutEx(foldouts[slave], slave);
+
+                    if (foldouts[slave])
+                    {
+                        createLayoutButtonsForCharacterId(slave);
+                    }
+                }
+
+                string allId = "Slaves";
+
+                if (!foldouts.ContainsKey(allId))
+                {
+                    foldouts.Add(allId, true);
+                }
+
+                foldouts[allId] = EditorLikeFoldoutEx(foldouts[allId], allId);
+
+                if (foldouts[allId])
+                {
+                    createLayoutButtonsForCharacterIdAll(allId, slaves);
+                }
+            }
+
+            GUILayout.Space(10);
+
+            foldoutMonsterCheats = EditorLikeFoldout(foldoutMonsterCheats, "Monster Cheats");
+
+            if (foldoutMonsterCheats)
+            {
+                string[] monsters = new string[] { "Horse", "GoblinBow", "Orc", "Goblin", "GoblinPillory" };
+
+                Dictionary<string, bool> foldouts = new Dictionary<string, bool>();
+
+                for (int i = 0; i < monsters.Length; i++)
+                {
+                    string slave = monsters[i];
+                    if (!foldouts.ContainsKey(slave))
+                    {
+                        foldouts.Add(slave, true);
+                    }
+
+                    foldouts[slave] = EditorLikeFoldoutEx(foldouts[slave], slave);
+
+                    if (foldouts[slave])
+                    {
+                        createLayoutButtonsForCharacterId(slave);
+                    }
+                }
+
+
+                string allId = "Monsters";
+
+                if (!foldouts.ContainsKey(allId))
+                {
+                    foldouts.Add(allId, true);
+                }
+
+                foldouts[allId] = EditorLikeFoldoutEx(foldouts[allId], allId);
+
+                if (foldouts[allId])
+                {
+                    createLayoutButtonsForCharacterIdAll(allId, monsters);
+                }
+            }
+
             GUILayout.EndScrollView();
 
             // Fenster verschiebbar machen
@@ -263,6 +580,18 @@ namespace ProjectR_CheatMenu
         {
             GUILayout.BeginHorizontal();
             string arrow = foldout ? "▼" : "▶";
+            if (GUILayout.Button(arrow + " " + title, GUI.skin.label))
+            {
+                foldout = !foldout;
+            }
+            GUILayout.EndHorizontal();
+            return foldout;
+        }
+
+        private bool EditorLikeFoldoutEx(bool foldout, string title)
+        {
+            GUILayout.BeginHorizontal();
+            string arrow = foldout ? "_▼" : "_▶";
             if (GUILayout.Button(arrow + " " + title, GUI.skin.label))
             {
                 foldout = !foldout;
