@@ -28,11 +28,12 @@ namespace ProjectR_CheatMenu
         private bool foldoutBuildings = true;
 
         // Beispielwerte für Cheats
-        private int seatLeft = -4;
-        private int seatRight = -4;
-        private int position1 = -4;
-        private int position2 = -1;
-        private int playerHealth = 100;
+        private int g_minX = -4;
+        private int g_maxX = 3;
+        private int g_minY = -4;
+        private int g_maxY = 3;
+        private int g_minSeat = 0;
+        private int g_maxSeat = 0;
 
         private int x;
         private int y;
@@ -77,17 +78,17 @@ namespace ProjectR_CheatMenu
             GUILayout.Window(0, new Rect(20, 20, 300, 400), DrawCheatWindow, "Cheat Menu");
         }
 
-        private void initPosition(bool isBuilding = false)
+        private void initPosition(int minX = -4, int maxX = 3, int minY = -4, int maxY = 3, int minSeat = 0, int maxSeat = 1, bool isBuilding = false)
         {
             GUILayout.Label("Spawn / Create Position:");
 
             GUILayout.Space(5);
 
             GUILayout.Label($"x: / Current x: {x}");
-            x = (int)GUILayout.HorizontalSlider((float)x, -4f, 3f);
+            x = (int)GUILayout.HorizontalSlider((float)x, (float)minX, (float)maxX);
 
             GUILayout.Label($"y: / Current y: {y}");
-            y = (int)GUILayout.HorizontalSlider((float)y, -4f, 3f);
+            y = (int)GUILayout.HorizontalSlider((float)y, (float)minY, (float)maxY);
 
             order = -1;
 
@@ -95,7 +96,7 @@ namespace ProjectR_CheatMenu
                 return;
 
             GUILayout.Label($"seat: / Current seat: {seat}");
-            seat = (int)GUILayout.HorizontalSlider((float)seat, 0, 1);
+            seat = (int)GUILayout.HorizontalSlider((float)seat, (float)minSeat, (float)maxSeat);
         }
 
         private void DrawCheatWindow(int windowID)
@@ -130,37 +131,31 @@ namespace ProjectR_CheatMenu
 
                 if (GUILayout.Button("Spawn Elf1"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Elf1", "Base", "Room", x, y, seat, order);
                 }
 
                 if (GUILayout.Button("Spawn Knight"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Knight", "Base", "Room", x, y, seat, order);
                 }
 
                 if (GUILayout.Button("Spawn Elf"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Elf", "Base", "Room", x, y, seat, order);
                 }
 
                 if (GUILayout.Button("Spawn Sister"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Sister", "Base", "Room", x, y, seat, order);
                 }
 
                 if (GUILayout.Button("Spawn Man"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Man", "Base", "Room", x, y, seat, order);
                 }
 
                 if (GUILayout.Button("Spawn Oni"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Oni", "Base", "Room", x, y, seat, order);
                 }
 
@@ -171,13 +166,11 @@ namespace ProjectR_CheatMenu
 
                 if (GUILayout.Button("Spawn Shield"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Shield", "Base", "Room", x, y, seat, order);
                 }
 
                 if (GUILayout.Button("Spawn Shortstack"))
                 {
-                    Building building2 = gm.NewBuilding("BreedingRoom", "Base", "Room", seatLeft, seatRight);
                     gm.NewCharacter("Shortstack", "Base", "Room", x, y, seat, order);
                 }
 
@@ -248,7 +241,7 @@ namespace ProjectR_CheatMenu
                     y = building2.Index1;
                 }
 
-                initPosition(true);
+                initPosition(g_minX -3, g_maxX + 3, g_minY - 3, g_maxY + 3, g_minSeat, g_maxSeat, true);
             }
             
             GUILayout.EndScrollView();
